@@ -1,0 +1,19 @@
+services:
+  db:
+    image: postgres:14.4-alpine
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=taxi-data
+    ports:
+      - 5432:5432
+    volumes:
+      - /tmp/postgres-data:/var/lib/postgresql/data:cached
+    
+  pgadmin:
+      image: dpage/pgadmin4
+      ports:
+        - 8080:80
+      environment:
+        PGADMIN_DEFAULT_EMAIL: admin@admin.com
+        PGADMIN_DEFAULT_PASSWORD: admin
