@@ -1,6 +1,11 @@
-FROM python:3.11.1
+FROM python:3.11.1-slim-buster
 
 WORKDIR /app
+
 COPY ingest_data.py ingest_data.py
-RUN pip install pandas sqlalchemy requests psycopg2 fastparquet
+
+RUN apt-get update && apt-get clean \
+    && apt-get -y install libpq-dev gcc \
+    && pip install --no-cache pandas sqlalchemy requests psycopg2 fastparquet
+
 ENTRYPOINT ["python", "ingest_data.py"]
