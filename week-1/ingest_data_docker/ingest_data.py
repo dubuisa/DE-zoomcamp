@@ -43,8 +43,6 @@ def psql_insert_copy(table, conn, keys, data_iter):
 
 
 def main(params):
-    year = params.year
-    month = params.month
     table_name = params.table_name
 
     host =params.host
@@ -53,23 +51,37 @@ def main(params):
     password = params.password
     port = params.port
 
-    base_url = "https://d37ci6vzurychx.cloudfront.net/trip-data"
-    url = f"{base_url}/yellow_tripdata_{year}-{month:02}.parquet"
+    url = params.url
+    
+    if url.endswith('.csv.gz'):
+        fname = 'output.csv.gz'
+    elif url.endswith('.csv'):
+        fname = 'output.csv'
+    elif url.endswith('.parquet'):
+        fname = 'output.parquet'
+    else:
+        logger.error(f'Cannot process file extension for {url=}, only supports csv, csv.gz and parquet')
+        exit(1)
 
     logger.info(f"Retrieving data: {url}")
     response = requests.get(url)
-
+    
     if response.status_code != 200:
         logger.info(f"GET {url} returned {response.status_code}")
         exit(1)
 
-    with open('./data.parquet', 'wb') as f:
+    with open(fname, 'wb') as f:
         f.write(response.content)
-        logger.info(f"file saved under ./data.parquet")
+        logger.info(f"file saved under {fname}")
 
 
     e = engine.create_engine(f'postgresql+psycopg2://{user}:{password}@{host}:{port}/{db}')
-    df = pd.read_parquet('./data.parquet')
+    
+    if fname == 'output.parquet' :
+        df = pd.read_parquet(fname)
+    else:
+        df = pd.read_csv(fname, parse_dates=[1,2])
+
     df.head(0).to_sql(name=table_name, con=e, if_exists='replace')
     df.to_sql(name=table_name, con=e, if_exists="append", index=False, method=psql_insert_copy)
     logger.info(f"Storing {len(df)} rows under {db=}, {table_name=}")
@@ -77,8 +89,7 @@ def main(params):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description = "Download and ingest NY taxi fare dataset'")
 
-    parser.add_argument("--year", help="Year of file", default=2022, required=False)
-    parser.add_argument("--month", help="Month of file", default=10, required=False)
+    parser.add_argument("--url", help="url to download the file")
     parser.add_argument("--table_name", help="Table_name for postgress")
     parser.add_argument("--host", help="host for postgress")
     parser.add_argument("--db", help="database name for postgress")
