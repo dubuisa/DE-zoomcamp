@@ -7,14 +7,15 @@ Prerequisites
 - You should have a Google Cloud Platform account and a project created.
 - You should have the gcloud command-line tool installed and configured with your project.
 - You should have Terraform installed on your machine.
-- You should have a service account credentials JSON file to authenticate with GCP.
+- You should have a service account credentials JSON file to authenticate with GCP and set the env-var `GOOGLE_APPLICATION_CREDENTIALS` with its path.
 
 # Instructions
 
 1. Clone this repository to your local machine.
 2. In the terminal, navigate to the root directory of the repository.
 3. Refresh the service-account's auth-token for this session by running the command gcloud auth application-default login
-4. Run the command terraform init to initialize the state file (.tfstate)
+4. Run the command `terraform init` to initialize terraform
+   
 5. Check the changes to the new infrastructure plan by running the command
    
 ```shell
