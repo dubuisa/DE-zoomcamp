@@ -22,7 +22,7 @@ provider "google" {
 # Data Lake Bucket
 # Ref: https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/storage_bucket
 resource "google_storage_bucket" "data-lake-bucket" {
-  name          = "${local.data_lake_bucket}_${var.project}"
+  name          = "${local.data_lake_bucket}_taxi"
   location      = var.region
   
   storage_class = var.storage_class
@@ -47,4 +47,6 @@ resource "google_bigquery_dataset" "dataset" {
   project = var.project
 
   location = var.region
+
+  delete_contents_on_destroy = true
 }
