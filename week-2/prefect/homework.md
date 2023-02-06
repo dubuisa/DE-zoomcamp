@@ -82,13 +82,16 @@ Answer is `88,605`
 ```bash
 TODO
 ```
-Answer is ``
-
+Answer is `514392`
+prefect deployment run etl-web-to-gcs/web-to-gcs-gh-source -p "year=2019" -p "month=4" -p "color=green"
 ---
 
 **Question 6** -  Secrets: how many characters are shown as asterisks (*)?
+
+create secret with the UI
 ```
 Value
+
 
 ********
 ```
