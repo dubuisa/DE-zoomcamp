@@ -52,7 +52,7 @@ Create github block
 from prefect.filesystems import GitHub
 
 gh = GitHub(
-    repository="https://github.com/dubuisa/DE-zoomcamp", reference="main"
+    repository="https://github.com/dubuisa/DE-zoomcamp", reference="master"
 )
 gh.save("zoomcamp", overwrite=True)
 
@@ -61,14 +61,18 @@ gh.save("zoomcamp", overwrite=True)
 Deploy flow using github block
 ```bash
 python3 blocks/make_github_block.py
+```
 
-prefect deployment build week-2/prefect/flows/02_gcp/etl_web_to_gcs.py:etl_web_to_gcs \
+From this repo root directory
+```
+prefect deployment build ./week-2/prefect/flows/02_gcp/etl_web_to_gcs.py:etl_web_to_gcs \
   -n web-to-gcs-gh-source \
-  -sb github/zoomcamp \
+  -sb "github/zoomcamp" \
   --apply
 
+
 prefect deployment run etl-web-to-gcs/web-to-gcs-gh-source \
-  -p "year=2022" -p "month=11" -p "color=green"
+  -p "year=2020" -p "month=11" -p "color=green"
 ```
 Answer is `88,605`
 

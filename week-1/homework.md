@@ -4,7 +4,7 @@
 docker build --help | grep "Write the image ID to the file"
 ```
 
-Answer is `--idimage string`
+Answer is `--iidfile string`
 
 ---
 
