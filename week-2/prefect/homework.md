@@ -80,10 +80,10 @@ Answer is `88,605`
 
 **Question 5** - Email or Slack notifications
 ```bash
-TODO
+prefect deployment run etl-web-to-gcs/web-to-gcs-gh-source -p "year=2019" -p "month=4" -p "color=green"
 ```
 Answer is `514392`
-prefect deployment run etl-web-to-gcs/web-to-gcs-gh-source -p "year=2019" -p "month=4" -p "color=green"
+
 ---
 
 **Question 6** -  Secrets: how many characters are shown as asterisks (*)?
